@@ -60,18 +60,27 @@ if uploaded_file is not None:
                 
                 # Perform prediction
                 predictions = model.predict(img_array)
-                pred_mask = predictions[0, :, :, 0]  # (176, 176)
+                # Model çıkış boyutundan emin olalım (bazı modellerde tek kanal olabilir)
+                pred_mask = predictions[0]
+                if len(pred_mask.shape) == 3:
+                    pred_mask = pred_mask[:, :, 0]
                 
-                # Normalize to 0-255 range for image display
-                pred_mask = (pred_mask * 255).astype(np.uint8)
+                # Debug: Maskedeki değerlerin aralığına bakalım (Streamlit'te görebiliriz)
+                st.write(f"Mask Min: {pred_mask.min()}, Max: {pred_mask.max()}")
+
+                # Eşikleme (Thresholding) - 0.5 çok yüksekse 0.1 gibi daha düşük bir değer deneyin
+                binary_mask = (pred_mask > 0.1).astype(np.uint8) * 255
                 
-                # Resize mask back to original image dimensions using nearest neighbor
-                pred_mask_pil = Image.fromarray(pred_mask).resize(image.size, Image.NEAREST)
+                # Maskeyi PIL görseline çevir
+                pred_mask_pil = Image.fromarray(binary_mask).resize(image.size, Image.NEAREST).convert("L")
                 
                 st.success("Segmentation Complete!")
                 
                 with col2:
                     st.subheader("Segmentation Mask")
+                    # maskenin boş gelip gelmediğini kontrol edelim
+                    if binary_mask.sum() == 0:
+                        st.warning("Model maske üretemedi (tüm değerler 0).")
                     st.image(pred_mask_pil, use_container_width=True)
                                                 
             except Exception as e:
