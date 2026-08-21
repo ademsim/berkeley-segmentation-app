@@ -1,5 +1,5 @@
 import os
-# Set Keras backend to PyTorch to avoid conflicts
+# Set Keras backend to PyTorch 
 os.environ["KERAS_BACKEND"] = "torch"
 
 import streamlit as st
@@ -8,8 +8,8 @@ import keras
 import numpy as np
 from PIL import Image, ImageOps
 
-# Google Drive file ID (Replace with your actual model file ID)
-FILE_ID = 'YOUR_GOOGLE_DRIVE_FILE_ID_HERE'
+# Google Drive file ID 
+FILE_ID = '117Htqb7ZTpB8FOK7-cMJEB_rlBV5zNFP'
 MODEL_PATH = 'berkeley_vgg16_transfer_learning_model.keras'
 
 @st.cache_resource
@@ -29,9 +29,9 @@ with st.spinner("Preparing the model, please wait..."):
     model = load_my_model()
 
 # User Interface
-st.set_page_config(page_title="Berkeley Image Segmentation App", page_icon="🖼️", layout="centered")
+st.set_page_config(page_title="Berkeley Image Segmentation App", layout="centered")
 
-st.title("🖼️ Berkeley Segmentation with VGG16 Transfer Learning")
+st.title("Berkeley Segmentation with VGG16 Transfer Learning")
 st.write("Please upload an image to perform pixel-level object segmentation.")
 
 # File uploader component
