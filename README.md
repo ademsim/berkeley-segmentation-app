@@ -36,6 +36,11 @@ berkeley-segmentation-app/
 
 Installation & Local Execution
 To run this application locally on your machine, follow these steps:
-```bash
-  git clone [https://github.com/YOUR_USERNAME/berkeley-segmentation-app.git](https://github.com/YOUR_USERNAME/berkeley-segmentation-app.git)
-  cd berkeley-segmentation-app
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/YOUR_USERNAME/berkeley-segmentation-app.git
+   cd berkeley-segmentation-app
+
+2. **Install the dependencies::**
+  ```bash
+  pip install -r requirements.txt
