@@ -62,17 +62,17 @@ if uploaded_file is not None:
                 predictions = model.predict(img_array)
                 pred_mask = predictions[0, :, :, 0]  # (176, 176)
                 
-                # Binary Thresholding
-                pred_mask = (pred_mask > 0.5).astype(np.uint8) * 255
+                # Normalize to 0-255 range for image display
+                pred_mask = (pred_mask * 255).astype(np.uint8)
                 
-                # Resize mask back to original image dimensions
+                # Resize mask back to original image dimensions using nearest neighbor
                 pred_mask_pil = Image.fromarray(pred_mask).resize(image.size, Image.NEAREST)
                 
                 st.success("Segmentation Complete!")
                 
                 with col2:
                     st.subheader("Segmentation Mask")
-                    st.image(pred_mask_pil, use_container_width=True, clamp=True)
-                
+                    st.image(pred_mask_pil, use_container_width=True)
+                                                
             except Exception as e:
                 st.error(f"An error occurred during analysis: {e}")
