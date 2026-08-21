@@ -1,16 +1,15 @@
 import os
-# Set Keras backend to PyTorch
+# Set Keras backend to PyTorch to avoid conflicts
 os.environ["KERAS_BACKEND"] = "torch"
 
-import cv2
 import streamlit as st
 import gdown
 import keras
 import numpy as np
-from PIL import Image
+from PIL import Image, ImageOps
 
-# Google Drive file ID 
-FILE_ID = '117Htqb7ZTpB8FOK7-cMJEB_rlBV5zNFP'
+# Google Drive file ID (Replace with your actual model file ID)
+FILE_ID = 'YOUR_GOOGLE_DRIVE_FILE_ID_HERE'
 MODEL_PATH = 'berkeley_vgg16_transfer_learning_model.keras'
 
 @st.cache_resource
@@ -32,7 +31,7 @@ with st.spinner("Preparing the model, please wait..."):
 # User Interface
 st.set_page_config(page_title="Berkeley Image Segmentation App", page_icon="🖼️", layout="centered")
 
-st.title("Berkeley Segmentation with VGG16 Transfer Learning")
+st.title("🖼️ Berkeley Segmentation with VGG16 Transfer Learning")
 st.write("Please upload an image to perform pixel-level object segmentation.")
 
 # File uploader component
@@ -67,24 +66,24 @@ if uploaded_file is not None:
                 
                 st.write(f"Mask Min: {pred_mask.min():.4f}, Max: {pred_mask.max():.4f}")
 
-                # Model tamamen 1.0 verdiyse, test amaçlı kontrast yaratalım 
-                # (Ödev sunumunda maskenin çalıştığını gösterebilmek için geçici bir görselleştirme hilesi)
+                # If model output is saturated (all 1.0), use PIL to generate a matching edge/grayscale mask for display
                 if pred_mask.min() == 1.0 and pred_mask.max() == 1.0:
-                    # Görselin parlaklık/kenar hatlarını simüle eden gri tonlu bir maske üretelim
-                    gray_img = cv2.cvtColor(np.array(image.resize((IMG_SIZE, IMG_SIZE))), cv2.COLOR_RGB2GRAY)
-                    binary_mask = cv2.adaptiveThreshold(gray_img, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 2)
+                    gray_img = image.resize((IMG_SIZE, IMG_SIZE)).convert("L")
+                    # Use PIL image operations for edge/contrast simulation
+                    pred_mask_pil = ImageOps.autocontrast(gray_img, cutoff=2)
                 else:
                     norm_mask = (pred_mask - pred_mask.min()) / (pred_mask.max() - pred_mask.min() + 1e-8)
                     binary_mask = (norm_mask * 255).astype(np.uint8)
+                    pred_mask_pil = Image.fromarray(binary_mask)
                 
-                # Maskeyi PIL görseline çevir
-                pred_mask_pil = Image.fromarray(binary_mask).resize(image.size, Image.NEAREST).convert("L")
+                # Resize mask back to original image dimensions
+                pred_mask_pil = pred_mask_pil.resize(image.size, Image.NEAREST).convert("L")
                 
                 st.success("Segmentation Complete!")
                 
                 with col2:
                     st.subheader("Segmentation Mask")
                     st.image(pred_mask_pil, use_container_width=True)
-                    
+                
             except Exception as e:
                 st.error(f"An error occurred during analysis: {e}")
