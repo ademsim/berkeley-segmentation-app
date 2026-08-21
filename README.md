@@ -37,19 +37,6 @@ berkeley-segmentation-app/
 Installation & Local Execution
 To run this application locally on your machine, follow these steps:
 
-1. Clone the repository:
-   ```bash
-   git clone <repository-url>
-   cd <repository-folder>
-
-1. Install the required dependencies:
-   ```bash
-   pip install streamlit tensorflow keras gdown numpy pillow torch
-
-3. Run the Streamlit app:
-   ```bash
-   streamlit run app.py
-
 1. **Clone the repository:**
    ```bash
    git clone https://github.com/YOUR_USERNAME/berkeley-segmentation-app.git
