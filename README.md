@@ -36,11 +36,24 @@ berkeley-segmentation-app/
 
 Installation & Local Execution
 To run this application locally on your machine, follow these steps:
+
 1. **Clone the repository:**
    ```bash
    git clone https://github.com/YOUR_USERNAME/berkeley-segmentation-app.git
    cd berkeley-segmentation-app
 
-2. **Install the dependencies::**
+2. **Install the dependencies:**
   ```bash
   pip install -r requirements.txt
+
+3. **Configure Google Drive File ID:**
+   Ensure your trained model file (berkeley_vgg16_transfer_learning_model.keras) is uploaded to Google Drive with public link sharing enabled, and update the FILE_ID           variable in app.py.
+
+4. **Run the Streamlit app:**
+   ```bash
+   streamlit run app.py
+
+
+Author: Adem Şimşek
+
+
