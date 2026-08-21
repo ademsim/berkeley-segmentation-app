@@ -9,7 +9,7 @@ import numpy as np
 from PIL import Image
 
 # Google Drive file ID 
-FILE_ID = '1ebHiEP18xHhnZvdH5aC5Sko_R7cvpNjJ'
+FILE_ID = '117Htqb7ZTpB8FOK7-cMJEB_rlBV5zNFP'
 MODEL_PATH = 'berkeley_vgg16_transfer_learning_model.keras'
 
 @st.cache_resource
