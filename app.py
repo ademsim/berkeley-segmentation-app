@@ -2,6 +2,7 @@ import os
 # Set Keras backend to PyTorch
 os.environ["KERAS_BACKEND"] = "torch"
 
+import cv2
 import streamlit as st
 import gdown
 import keras
